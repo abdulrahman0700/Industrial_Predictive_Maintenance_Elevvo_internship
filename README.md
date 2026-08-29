@@ -1,0 +1,2 @@
+# Industrial_Predictive_Maintenance_Elevvo_internship
+Industrial_Predictive_Maintenance
