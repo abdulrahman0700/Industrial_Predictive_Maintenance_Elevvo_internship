@@ -276,7 +276,6 @@ if will_fail:
 - **Model choice vs. the FDR goal.** Random Forest achieved a lower FDR (0.018) than the selected LightGBM (0.059) on the test set. LightGBM was chosen as the required model for this project.
 - **Small evaluation set for failure types.** The stage 2 test split contains only ~128 failed machines, and Random Failure has no test examples, so its 0.00 scores are not informative.
 - **Preprocessing before the split.** Outlier capping was applied to the full dataset before the train/test split.
-- **Execute stage is unfinished.** `04_Execute.ipynb` contains the framework and first insights; final recommendations are still to be written.
 
 ## Future Work
 
