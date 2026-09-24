@@ -46,6 +46,6 @@ data_path = path_settings.rows_data_dir()
 
 preprocess = preprocessing(Path=data_path)
 
-process_data = preprocess.renaming()
+# process_data = preprocess.renaming()
 
-preprocess.saving_data(process_data)
+# preprocess.saving_data(process_data)
