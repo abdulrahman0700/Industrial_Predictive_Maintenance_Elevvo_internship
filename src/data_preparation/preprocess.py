@@ -8,13 +8,12 @@ class preprocessing():
         self.DATA_PATH =  Path
         self.df = pd.read_csv(self.DATA_PATH) 
 
-    def intial_data_exploration(self):
-        print("The First 10 rows of the data")
-        print(self.df.head(10))
-        print("Summary Statisical :- ")
-        print(self.df.describe().T)
-        print("Information about the data")
-        print(self.df.info())
+    def dataSample(self):
+        print("10 sample rows of the data")
+        print(self.df.sample(15))
+
+    def SummaryStatistical(self):
+        print(self.df.describe())
 
     def dataChecking(self):
 
@@ -22,9 +21,15 @@ class preprocessing():
             {
             "Null_Values":self.df.isnull().sum(),
             "average_Null_values":self.df.isnull().mean(),
-            })
+            }
+        )
         return report
-
+    
+    def renaming(self):
+        for column in self.df.columns:
+            column_v = column.replace(" ","_").replace("[","_").replace("]","")
+            self.df.rename(columns={column:column_v},inplace=True)
+        print(self.df)
 
 path_settings = Configuration()
 
@@ -32,8 +37,11 @@ path = path_settings.rows_data()
 
 preprocess = preprocessing(Path=path)
 
+preprocess.renaming()
+
+
 report = preprocess.dataChecking()
 
-data_explore = preprocess.intial_data_exploration()
-print(data_explore)
-print(report)
+# preprocess.dataSample()
+# preprocess.SummaryStatistical()
+# print(report)
