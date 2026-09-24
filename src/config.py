@@ -45,10 +45,10 @@ class Configuration(BaseSettings):
         return self.model_artifacts_dir / self.model_failure_type
 
 
-    def rows_data(self) -> Path :
+    def rows_data_dir(self) -> Path :
         return self.data / self.row_data
 
-    def cleaned_Data(self) -> Path :
+    def cleaned_Data_dir(self) -> Path :
         return self.data / self.cleaned_data
 
 

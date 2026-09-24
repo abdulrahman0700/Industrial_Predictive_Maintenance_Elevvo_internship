@@ -6,13 +6,13 @@ from src.config import Configuration
 class preprocessing():
     def __init__(self,Path):
         self.DATA_PATH =  Path
-        self.df = pd.read_csv(self.DATA_PATH) 
+        self.df = pd.read_csv(self.DATA_PATH,index_col=0) 
 
     def dataSample(self):
         print("10 sample rows of the data")
         print(self.df.sample(15))
 
-    def SummaryStatistical(self):
+    def SummaryStatistics(self):
         print(self.df.describe())
 
     def dataChecking(self):
@@ -25,23 +25,27 @@ class preprocessing():
         )
         return report
     
+    def dataInfo(self):
+        print(self.df.info())
+    
     def renaming(self):
         for column in self.df.columns:
             column_v = column.replace(" ","_").replace("[","_").replace("]","")
             self.df.rename(columns={column:column_v},inplace=True)
-        print(self.df)
+        
+        return self.df
+
+    def saving_data(self,clean_data):
+        clean_data.to_csv(f"{path_settings.cleaned_Data_dir()}")
+
+    
 
 path_settings = Configuration()
 
-path = path_settings.rows_data()
+data_path = path_settings.rows_data_dir()
 
-preprocess = preprocessing(Path=path)
+preprocess = preprocessing(Path=data_path)
 
-preprocess.renaming()
+process_data = preprocess.renaming()
 
-
-report = preprocess.dataChecking()
-
-# preprocess.dataSample()
-# preprocess.SummaryStatistical()
-# print(report)
+preprocess.saving_data(process_data)
