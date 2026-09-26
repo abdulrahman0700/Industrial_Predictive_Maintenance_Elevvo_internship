@@ -12,9 +12,9 @@ class Configuration(BaseSettings):
 
 #--------------MLflowConfig--------------
 
-    mlflow_tracking_URI : str = ""
+    mlflow_tracking_URI : str = "http://127.0.0.1:5000"
 
-    mlflow_experiment_name : str = ""
+    mlflow_experiment_name : str = "Machine_Failure_Prediction"
 
 #---------------modelConfig----------------
     
