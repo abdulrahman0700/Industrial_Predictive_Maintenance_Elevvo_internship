@@ -12,15 +12,16 @@ class Configuration(BaseSettings):
 
 #--------------MLflowConfig--------------
 
-    mlflow_tracking_URI : str = "http://127.0.0.1:5000"
+    mlflow_tracking_URI : str = "sqlite:///mlflow.db" # the place that will be saving the artifacts
 
     mlflow_experiment_name : str = "Machine_Failure_Prediction"
 
 #---------------modelConfig----------------
     
-    model_artifacts_dir : Path = Path("models_artifacts")
-    model_failure : str = "models_artifacts/lgbm_model_failure.joblib"
-    model_failure_type : str = "models_artifacts/XGBoosts_model_type_failure.joblib"
+    Mlflow_model_artifacts_dir : Path = Path("models_artifacts")
+    model_failure : str = "lgbm_model_failure.joblib"
+    model_failure_type : str = "XGBoosts_model_type_failure.joblib"
+    mlflow_info : str = "mlflow_info/" 
 
 #---------------DataConfig-----------------
     data : Path = Path("data")  
@@ -37,6 +38,8 @@ class Configuration(BaseSettings):
 
     log_level : str = "INFO"
 
+    def artifacts_directory(self) -> Path:
+        return self.Mlflow_model_artifacts_dir / self.mlflow_info
     
     def failure_machine(self) -> Path :
         return self.model_artifacts_dir / self.model_failure
