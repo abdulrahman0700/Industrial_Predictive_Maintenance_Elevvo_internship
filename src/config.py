@@ -19,7 +19,8 @@ class Configuration(BaseSettings):
 #---------------modelConfig----------------
     
     Mlflow_model_artifacts_dir : Path = Path("models_artifacts")
-    model_failure : str = "lgbm_model_failure.joblib"
+    # model_failure : str = "lgbm_model_failure.joblib"
+    model_failure : str = "model.pkl"
     model_failure_type : str = "XGBoosts_model_type_failure.joblib"
     mlflow_info : str = "mlflow_info/" 
 
@@ -27,6 +28,7 @@ class Configuration(BaseSettings):
     data : Path = Path("data")  
     row_data : str = "Row_data/ai4i_predictive_maintenance.csv"
     cleaned_data : str = "processed/df_cleaned_v1.csv"
+    sample_testing : str = "Sample/ai4i2020_2000_high_failure.csv"
 
 #--------------API Config------------------
 
@@ -42,17 +44,19 @@ class Configuration(BaseSettings):
         return self.Mlflow_model_artifacts_dir / self.mlflow_info
     
     def failure_machine(self) -> Path :
-        return self.model_artifacts_dir / self.model_failure
+        return self.Mlflow_model_artifacts_dir / self.model_failure
 
     def failure_Machine_type(self) -> Path :
-        return self.model_artifacts_dir / self.model_failure_type
-
+        return self.Mlflow_model_artifacts_dir / self.model_failure_type
 
     def rows_data_dir(self) -> Path :
         return self.data / self.row_data
 
     def cleaned_Data_dir(self) -> Path :
         return self.data / self.cleaned_data
+
+    def testing_unseen_data(self) -> Path :
+        return self.data / self.sample_testing
 
 
     Threshold : float = 0.70

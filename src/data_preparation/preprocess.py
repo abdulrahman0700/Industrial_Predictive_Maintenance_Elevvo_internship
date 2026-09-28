@@ -35,8 +35,9 @@ class preprocessing():
         
         return self.df
 
-    def saving_data(self,clean_data):
-        clean_data.to_csv(f"{path_settings.cleaned_Data_dir()}")
+    def saving_data(self,clean_data,path):
+        clean_data.to_csv(f"{path}")
+        print("File Saved Successfully")
 
     
 
@@ -48,4 +49,4 @@ preprocess = preprocessing(Path=data_path)
 
 # process_data = preprocess.renaming()
 
-# preprocess.saving_data(process_data)
+# preprocess.saving_data(process_data,path_settings.cleaned_Data_dir())

@@ -1,16 +1,17 @@
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import StandardScaler , OneHotEncoder
 import lightgbm as lgm
-import pickle
+import matplotlib.pyplot as plt
+import seaborn as sns
 from pathlib import Path
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from src.data_preparation.preprocess import preprocessing
 from sklearn.model_selection import train_test_split 
-from sklearn.metrics import accuracy_score , f1_score , recall_score ,precision_score , confusion_matrix , roc_curve
+from sklearn.metrics import accuracy_score , f1_score , recall_score ,precision_score , confusion_matrix , classification_report ,ConfusionMatrixDisplay
 from src.config import Configuration
 import mlflow
-import os
 
 class training(preprocessing):
 
@@ -64,6 +65,7 @@ class training(preprocessing):
         artifacts = str(Path(artifacts_location_saving).resolve())
 
         mlflow.set_tracking_uri(mlflow_tracking_URI)
+
         try:
             mlflow.create_experiment(
                 name=experiment_name,
@@ -96,7 +98,12 @@ class training(preprocessing):
                 "Learning__rate":0.01,
                 "importance_type":"split",
             })
-            
+
+            fig,_ = plt.subplots()
+            matrix = confusion_matrix(y_test,predict)
+            sns.heatmap(matrix,annot=True,fmt=".2f",cmap="Blues",linewidths=0.5)
+
+            mlflow.log_figure(fig,"confusion_matrix.png")
             mlflow.log_metric("Recall_Score",recall_score(y_test,predict))
             mlflow.log_metric("precision_score",precision_score(y_test,predict))
             mlflow.log_metric("f1_score",f1_score(y_test,predict))
@@ -106,10 +113,6 @@ class training(preprocessing):
 
             print("Experiment logged successfully!")
             
-
-
-    def model_saving(self,model):
-        pass
 
 
 sittings = Configuration()

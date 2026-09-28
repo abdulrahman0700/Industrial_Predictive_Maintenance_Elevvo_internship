@@ -13,8 +13,8 @@ def FeatureEngineering(df):
 sittings = Configuration()
 preprocess = preprocessing(sittings.cleaned_Data_dir())
 cleaned_data = FeatureEngineering(preprocess.df)
-preprocess.saving_data(cleaned_data)
-print(preprocess.df)
+preprocess.saving_data(cleaned_data,sittings.cleaned_Data_dir())
+# print(preprocess.df)
 
 
 
