@@ -12,7 +12,7 @@ class Configuration(BaseSettings):
 
 #--------------MLflowConfig--------------
 
-    mlflow_tracking_URI : str = "sqlite:///mlflow.db" # the place that will be saving the artifacts
+    mlflow_tracking_URI : str = "sqlite:///mlflow.db" # the database db that will be saving the artifacts
 
     mlflow_experiment_name : str = "Machine_Failure_Prediction"
 
@@ -28,7 +28,7 @@ class Configuration(BaseSettings):
     data : Path = Path("data")  
     row_data : str = "Row_data/ai4i_predictive_maintenance.csv"
     cleaned_data : str = "processed/df_cleaned_v1.csv"
-    sample_testing : str = "Sample/ai4i2020_2000_high_failure.csv"
+    sample_testing : str = "Sample/ai4i2020_2000_high_failure.csv" # Generated Data with the same distrubution of original data and fixing the imbalamce problem
 
 #--------------API Config------------------
 
@@ -62,4 +62,4 @@ class Configuration(BaseSettings):
     Threshold : float = 0.70
 
 
-Settings = Configuration()
+# Settings = Configuration()

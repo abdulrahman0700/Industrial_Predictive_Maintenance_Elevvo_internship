@@ -7,8 +7,13 @@ from src.data_preparation.preprocess import preprocessing
 from src.data_preparation.feature_engineering import FeatureEngineering
 
 class Prediction(preprocessing):
+
+   def TheModel(self,path):
+      model = joblib.load(path)
+      return model
    
-   def predicting(self,model,data):
+   def predicting(self,data,model_path):
+      model = self.TheModel(model_path)
       result = model.predict(data)
       return result
 
@@ -18,23 +23,21 @@ class Prediction(preprocessing):
    
       
 sittings = Configuration()
+pre = Prediction(sittings.testing_unseen_data())
+model = pre.TheModel(sittings.failure_machine())
+# df_sample_unseen = pre.renaming()
 
-pred = Prediction(sittings.testing_unseen_data())
+# df_sample_unseen = (df_sample_unseen)
 
-model = joblib.load(sittings.failure_machine())
+# pre.saving_data(df_sample_unseen,sittings.testing_unseen_data())
 
-df_sample_unseen = pred.renaming()
+# df_unseen = df_sample_unseen.drop(columns=['Machine_failure','Product_ID','TWF', 'HDF', 'PWF', 'OSF', 'RNF'])
 
-df_sample_unseen = FeatureEngineering(df_sample_unseen)
+# predict = pre.predicting(df_unseen,model)
 
-pred.saving_data(df_sample_unseen,sittings.testing_unseen_data())
+# proba_result = pre.predicting_proba(model,df_unseen)
 
-df_unseen = df_sample_unseen.drop(columns=['Machine_failure','Product_ID','TWF', 'HDF', 'PWF', 'OSF', 'RNF'])
-
-predict = pred.predicting(model,df_unseen)
-proba_result = pred.predicting_proba(model,df_unseen)
-
-print(predict ,proba_result)
+# print(predict ,proba_result)
 
 
 # recall ,f1score ,precision,False_Dicovery_Rate = pred.metrices(df_sample_unseen['Machine_failure'],model,df_pred)

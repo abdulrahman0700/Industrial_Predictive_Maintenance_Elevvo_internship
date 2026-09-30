@@ -41,11 +41,11 @@ class preprocessing():
 
     
 
-path_settings = Configuration()
+# path_settings = Configuration()
 
-data_path = path_settings.rows_data_dir()
+# data_path = path_settings.rows_data_dir()
 
-preprocess = preprocessing(Path=data_path)
+# preprocess = preprocessing(Path=data_path)
 
 # process_data = preprocess.renaming()
 

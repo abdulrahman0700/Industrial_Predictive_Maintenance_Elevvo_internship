@@ -11,9 +11,14 @@ from src.data_preparation.preprocess import preprocessing
 from sklearn.model_selection import train_test_split 
 from sklearn.metrics import accuracy_score , f1_score , recall_score ,precision_score , confusion_matrix , classification_report ,ConfusionMatrixDisplay
 from src.config import Configuration
+from src.data_preparation.feature_engineering import FeatureEngineering
 import mlflow
 
 class training(preprocessing):
+
+    def FEngineering(self):
+        df = FeatureEngineering(self.df)
+        return df
 
     def data_spliting(self):
         X = self.df.drop(columns=['Machine_failure','Product_ID',"TWF","HDF","PWF","OSF","RNF"])
@@ -115,8 +120,10 @@ class training(preprocessing):
             
 
 
-sittings = Configuration()
-train = training(sittings.cleaned_Data_dir())
-model = train.model_training()
-train.ModelTracking(sittings.mlflow_experiment_name,sittings.artifacts_directory(),sittings.mlflow_tracking_URI)
+# sittings = Configuration()
+# train = training(sittings.cleaned_Data_dir())
+# df = train.FEngineering()
+# print(df)
+# model = train.model_training()
+# train.ModelTracking(sittings.mlflow_experiment_name,sittings.artifacts_directory(),sittings.mlflow_tracking_URI)
 
