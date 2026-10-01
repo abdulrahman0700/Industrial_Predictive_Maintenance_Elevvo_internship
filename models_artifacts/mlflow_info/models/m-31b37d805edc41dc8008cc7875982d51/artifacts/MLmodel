@@ -1,0 +1,23 @@
+artifact_path: d:\Python\Industrial_Predictive_Maintenance_Elevvo_internship\models_artifacts\mlflow_info/models/m-31b37d805edc41dc8008cc7875982d51/artifacts
+flavors:
+  lightgbm:
+    code: null
+    data: model.pkl
+    lgb_version: 4.7.0
+    model_class: sklearn.pipeline.Pipeline
+    serialization_format: cloudpickle
+    skops_trusted_types: null
+  python_function:
+    data: model.pkl
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.14.5
+mlflow_version: 3.16.1
+model_id: m-31b37d805edc41dc8008cc7875982d51
+model_size_bytes: 1750071
+model_uuid: m-31b37d805edc41dc8008cc7875982d51
+prompts: null
+run_id: b89bba2a9be64108824b5d2335ddbc62
+utc_time_created: '2026-09-27 15:20:51.261756'
