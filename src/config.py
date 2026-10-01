@@ -8,7 +8,7 @@ class Configuration(BaseSettings):
 
 #------------databaseConfig-------------- 
  
-    DATABASE_URL :str = "postgresql://postgres:123456789@localhost:5432/"
+    DATABASE_URL :str = "postgresql://postgres:123456789@localhost:5432/postgres"
 
 #--------------MLflowConfig--------------
 
@@ -61,5 +61,3 @@ class Configuration(BaseSettings):
 
     Threshold : float = 0.70
 
-
-# Settings = Configuration()

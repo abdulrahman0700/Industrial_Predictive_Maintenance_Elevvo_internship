@@ -1,81 +1,22 @@
-import psycopg2
+from sqlalchemy import create_engine , Column , String , Integer , Float , Boolean
+from sqlalchemy.orm import declarative_base 
 
-class DataBaseConfig():
-    def __init__(self,DB_NAME,DB_USER,DB_PASS,DB_HOST,DB_PORT):
-        try:
-            self.connect = psycopg2.connect(database=DB_NAME,
-                                            user=DB_USER,
-                                            password=DB_PASS,
-                                            port=DB_PORT,
-                                            host=DB_HOST)
-            print("Database Connected Sucessfully")
-        except:
-            print("Error in Connecting DataBase") 
+Base = declarative_base()
 
-        self.cur = self.connect.cursor()
+class AI4I_Predictive_maintance(Base):    
+    __tablename__ = "AI4I"
 
-    def CREATE_TABLE(self):
-        self.cur.execute("""
-        CREATE TABLE IF NOT EXISTS AI4I(
-        ID SERIAL PRIMARY KEY ,
-        Product_ID TEXT NOT NULL,
-        Type CHAR(1) NOT NULL,
-        Air_temperature_K FLOAT NOT NULL,
-        Process_temperature_K FLOAT NOT NULL,
-        Rotational_speed_rpm INT NOT NULL,
-        Torque_Nm FLOAT NOT NULL,
-        Tool_wear_min INT NOT NULL,
-        Machine_failure BOOL NOT NULL,
-        Tool_Wear_Failure_TWF BOOL NOT NULL ,
-        Heat_Dissipation_Failure_HDF BOOL NOT NULL,
-        Power_Failure_PWF BOOL NOT NULL,
-        Overstrain_Failure_OSF BOOL NOT NULL,
-        Random_Failures_RNF BOOL NOT NULL
-        )
-        """)
-
-    def READ(self,cols):
-        if cols == 'all' :
-            self.cur.execute(f"""
-            SELECT * FROM AI4I
-            """)
-        elif isinstance(cols,int):
-            self.cur.execute("""
-            SELECT * FROM AI4I WHERE ID={}
-            """.format(cols))
-
-    def WRITE(self,*columns):
-        columns[0] += 1
-        self.cur.execute(f"""
-        INSERT INTO AI4I {columns}
-        VALUES {"(" + ",".join(["%s"]*len(columns)) + ")"}
-        """,(columns))
-
-        self.connect.commit()
-
-    def UPDATE(self,col):
-        self.cur.execute("""
-        UPDATE AI4I SET(
-        ID={},
-        Product_ID={},
-        Type={},
-        Air_temperature_K={},
-        Process_temperature_K={},
-        Rotational_speed_rpm={},
-        Torque_Nm={},
-        Tool_wear_min={},
-        Machine_failure={},
-        Tool_Wear_Failure_TWF={},
-        Heat_Dissipation_Failure_HDF={},
-        Power_Failure_PWF={},
-        Overstrain_Failure_OSF={},
-        Random_Failures_RNF={}
-        WHERE ID={}
-        )
-        """.format(col[1:],col[0]))
-
-        self.connect.commit()
-
-    def DELETE(self,id):
-        self.cur.execute("""DELETE FROM AIAI WHERE ID={}""",id)
-        self.connect.commit()
+    UDI = Column(String,primary_key=True)
+    Product_ID = Column(String,nullable=False)
+    Type = Column(String(1),nullable=False)
+    Air_temperature__K = Column(Float,nullable=False)
+    Process_temperature__K = Column(Float,nullable=False) 
+    Rotational_speed__rpm = Column(Integer,nullable=False)
+    Torque__Nm = Column(Float,nullable=False)
+    Tool_wear__min = Column(Integer,nullable=False)
+    Machine_failure = Column(Boolean,nullable=False)
+    TWF=Column(Boolean,nullable=False)
+    HDF=Column(Boolean,nullable=False)
+    PWF=Column(Boolean,nullable=False)
+    OSF=Column(Boolean,nullable=False)
+    RNF=Column(Boolean,nullable=False)
