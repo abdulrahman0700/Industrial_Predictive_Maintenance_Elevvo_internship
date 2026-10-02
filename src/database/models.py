@@ -4,10 +4,10 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 class AI4I_Predictive_maintance(Base):  
-      
+
     __tablename__ = "AI4I"
 
-    UDI = Column(String,primary_key=True)
+    UDI = Column(Integer,primary_key=True)
     Product_ID = Column(String,nullable=False)
     Type = Column(String(1),nullable=False)
     Air_temperature__K = Column(Float,nullable=False)
