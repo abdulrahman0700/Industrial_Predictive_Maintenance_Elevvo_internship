@@ -1,4 +1,5 @@
 import pickle
+from typing import ClassVar
 from pathlib import Path
 from pydantic_settings import BaseSettings , SettingsConfigDict 
 
@@ -8,7 +9,7 @@ class Configuration(BaseSettings):
 
 #------------databaseConfig-------------- 
  
-    DATABASE_URL :str = "postgresql://postgres:123456789@localhost:5432/postgres"
+    DATABASE_URL : str = 'postgresql+psycopg2://postgres:123456789@localhost:5432/postgres'
 
 #--------------MLflowConfig--------------
 

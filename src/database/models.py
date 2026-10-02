@@ -3,7 +3,8 @@ from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
-class AI4I_Predictive_maintance(Base):    
+class AI4I_Predictive_maintance(Base):  
+      
     __tablename__ = "AI4I"
 
     UDI = Column(String,primary_key=True)

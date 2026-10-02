@@ -1,13 +1,14 @@
 from sqlalchemy import Column , create_engine, Integer , String , Float , Boolean
 from sqlalchemy.orm import declarative_base , sessionmaker 
 from src.config import Configuration
-from src.database.models import AI4I_Predictive_maintance
+from src.database.models import AI4I_Predictive_maintance , Base
 
+config = Configuration()
 
 class databaseConnection():
-    def __init__(self,URL):
-        self.engine = URL
-        self.Base = declarative_base()
+    def __init__(self):
+        self.engine = create_engine(config.DATABASE_URL)
+        self.Base = Base
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
 
@@ -18,9 +19,7 @@ class databaseConnection():
         self.session.add(data)
         self.session.commit()
 
-config = Configuration()
-database = databaseConnection(config.DATABASE_URL)
-dataCreation = AI4I_Predictive_maintance()
+database = databaseConnection()
 database.CreateDatabase()
 
 
