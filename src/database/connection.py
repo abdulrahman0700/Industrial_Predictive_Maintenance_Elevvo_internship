@@ -29,14 +29,8 @@ class databaseConnection():
         return fetched_data
 
     def read_specific_data(self,id):
-        try:
-            Specific_row = self.session.get(AI4I_Predictive_maintance,id)
-        except Exception as e :
-            raise Exception(f"An error occurred: {e}")
-        except ValueError :
-            raise "Invalid input Error"
-        else:
-            return Specific_row
+        Specific_row = self.session.get(AI4I_Predictive_maintance,id)
+        return Specific_row
 
 # row_input = {
 #     "Product_ID":"M37684",
