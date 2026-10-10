@@ -3,6 +3,9 @@ from src.database.connection import databaseConnection
 from src.config import Configuration
 from api.routes.health import checking_server
 from src.schemas.Sensor_schema import Sensor_validation
+import plotly.express as px
+import pandas as pd
+
 
 app = FastAPI(title="Predictive_Maintenance",version="1.0.0")
 
@@ -23,35 +26,41 @@ def GettingData(id : int):
         )
     return {"data":data}
 
+@app.get("/dashboard")
+def Visulization():
+    row_data = database.read_all_data()
+    airTemp = [df.Air_temperature__K for df in row_data]
+    print(df)
+    # if not row_data :
+    #     raise HTTPException(
+    #         status_code=404,
+    #         details="data does not exist"
+    #     )
+    # dataframe = pd.DataFrame(row_data)
+    # print(f"the dataframe{dataframe.head()}")
+    # numerical_feature = dataframe.select_dtypes(exclude='number')
+    # print(f"the numbers {numerical_feature}")
+    
+    # d = sns.histplot(numerical_feature)
+    # plt.show()
+    # return d
+
 # Postman API Testing Verified
 @app.post("/predict")
 def Predictions(request : Sensor_validation):
-     Product_ID = request.Product_ID 
-     Type = request.Type
-     Air_temperature__K=request.Air_temperature__K 
-     Process_temperature__K=request.Process_temperature__K  
-     Rotational_speed__rpm=request.Rotational_speed__rpm 
-     Torque__Nm=request.Torque__Nm
-     Tool_wear__min=request.Tool_wear__min
-     Machine_failure=request.Machine_failure 
-     TWF=request.TWF
-     HDF=request.HDF
-     PWF=request.PWF
-     OSF=request.OSF
-     RNF=request.RNF
-
+     
      database.insert_data(request)
 
-     return{"ProductId":Product_ID,
-            "type":Type,
-            "airTemp":Air_temperature__K,
-            "ProecessTemp":Process_temperature__K,
-            "RotationlSpeed":Rotational_speed__rpm,
-            "Torque":Torque__Nm,
-            "ToolWear":Tool_wear__min,
-            "MachineFailure":Machine_failure,
-            "twf":TWF,
-            "hdf":HDF,
-            "pwf":PWF,
-            "osf":OSF,
-            "rnf":RNF}
+     return{"ProductId":request.Product_ID ,
+            "type":request.Type,
+            "airTemp":request.Air_temperature__K,
+            "ProecessTemp":request.Process_temperature__K  ,
+            "RotationlSpeed":request.Rotational_speed__rpm ,
+            "Torque":request.Torque__Nm,
+            "ToolWear":request.Tool_wear__min,
+            "MachineFailure":request.Machine_failure,
+            "twf":request.TWF,
+            "hdf":request.HDF,
+            "pwf":request.PWF,
+            "osf":request.OSF,
+            "rnf":request.RNF}
