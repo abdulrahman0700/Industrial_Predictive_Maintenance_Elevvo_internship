@@ -1,8 +1,9 @@
-from fastapi import FastAPI ,requests , HTTPException 
+from fastapi import FastAPI ,requests , HTTPException  , APIRouter
 from fastapi.responses import HTMLResponse
 from src.database.connection import databaseConnection
 from src.config import Configuration
-from api.routes.health import checking_server
+from api.routes.health import router1
+from api.routes.predict import router2
 from src.schemas.Sensor_schema import Sensor_validation
 from src.data_preparation.feature_engineering import FeatureEngineering
 import plotly.express as px
@@ -13,15 +14,14 @@ import joblib
 
 app = FastAPI(title="Predictive_Maintenance",version="1.0.0")
 
+app.include_router(router1)
+app.include_router(router2)
+
 database = databaseConnection()
 
 sitings = Configuration()
 
 model = joblib.load(sitings.failure_machine())
-
-@app.get('/')
-def HealthyCheck():
-    return checking_server()
 
 
 @app.get("/data/{id}")
@@ -63,35 +63,35 @@ def Visulization():
     return  HTMLResponse(content=html_content_num1) 
 
 # Postman API Testing Verified
-@app.post("/predict")
-def Predictions(request : Sensor_validation):
+# @app.post("/predict")
+# def Predictions(request : Sensor_validation):
 
-    r_data = pd.DataFrame({"Type":request.Type,
-                              "Air_temperature__K":request.Air_temperature__K,
-                              "Process_temperature__K":request.Process_temperature__K,
-                              "Rotational_speed__rpm":request.Rotational_speed__rpm,
-                              "Tool_wear__min":request.Tool_wear__min,
-                              "Torque__Nm":request.Torque__Nm},index=[0])
-    dataReady = FeatureEngineering(r_data)
+#     r_data = pd.DataFrame({"Type":request.Type,
+#                               "Air_temperature__K":request.Air_temperature__K,
+#                               "Process_temperature__K":request.Process_temperature__K,
+#                               "Rotational_speed__rpm":request.Rotational_speed__rpm,
+#                               "Tool_wear__min":request.Tool_wear__min,
+#                               "Torque__Nm":request.Torque__Nm},index=[0])
+#     dataReady = FeatureEngineering(r_data)
     
-    prediction = model.predict(dataReady)
+#     prediction = model.predict(dataReady)
 
-    print(prediction)
+#     print(prediction)
 
-    # return prediction 
+#     return prediction 
      
-    # database.insert_data(request)
+#     database.insert_data(request)
 
-    # return{"ProductId":request.Product_ID ,
-    #         "type":request.Type,
-    #         "airTemp":request.Air_temperature__K,
-    #         "ProecessTemp":request.Process_temperature__K  ,
-    #         "RotationlSpeed":request.Rotational_speed__rpm ,
-    #         "Torque":request.Torque__Nm,
-    #         "ToolWear":request.Tool_wear__min,
-    #         "MachineFailure":request.Machine_failure,
-    #         "twf":request.TWF,
-    #         "hdf":request.HDF,
-    #         "pwf":request.PWF,
-    #         "osf":request.OSF,
-    #         "rnf":request.RNF}
+#     return{"ProductId":request.Product_ID ,
+#             "type":request.Type,
+#             "airTemp":request.Air_temperature__K,
+#             "ProecessTemp":request.Process_temperature__K  ,
+#             "RotationlSpeed":request.Rotational_speed__rpm ,
+#             "Torque":request.Torque__Nm,
+#             "ToolWear":request.Tool_wear__min,
+#             "MachineFailure":request.Machine_failure,
+#             "twf":request.TWF,
+#             "hdf":request.HDF,
+#             "pwf":request.PWF,
+#             "osf":request.OSF,
+#             "rnf":request.RNF}
