@@ -8,3 +8,4 @@ router1 = APIRouter(prefix='/health',tags=['Healthy'])
 def checking_server():
     return {"status":"Healthy","code":200}
 
+

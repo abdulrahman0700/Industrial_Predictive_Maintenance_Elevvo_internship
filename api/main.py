@@ -21,9 +21,6 @@ database = databaseConnection()
 
 sitings = Configuration()
 
-model = joblib.load(sitings.failure_machine())
-
-
 @app.get("/data/{id}")
 def GettingData(id : int):
     data = database.read_specific_data(id)

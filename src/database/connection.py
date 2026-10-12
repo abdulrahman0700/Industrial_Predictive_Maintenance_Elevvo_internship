@@ -1,8 +1,8 @@
 from sqlalchemy import Column , create_engine, Integer , String , Float , Boolean , select,update,delete
 from sqlalchemy.orm import declarative_base , sessionmaker 
 from src.config import Configuration
-from src.database.models import AI4I_Predictive_maintance , Base
-from src.schemas.Sensor_schema import Sensor_validation
+from src.database.models import AI4I_Predictive_maintance , Base , PredictionsRecords
+from src.schemas.Sensor_schema import Sensor_validation , Predcation_Validation
 
 config = Configuration()
 
@@ -23,12 +23,27 @@ class databaseConnection():
         self.session.commit()
         return records
 
-    def read_all_data(self):
+    def insert_Predction_data(self,Pydantic_predction : PredictionsRecords):
+        records = Pydantic_predction.model_dump()
+        d_records = PredictionsRecords(**records)
+        self.session.add(d_records)
+        self.session.commit()
+
+    def read_all_prediction_data(self):
+        predRecord = select(PredictionsRecords)
+        dataFetching = self.session.scalars(predRecord).all()
+        return dataFetching
+
+    def read_specific_Predction_data(self,id):
+        Sdata = self.session.get(PredictionsRecords,id)
+        return Sdata
+
+    def read_record_data(self):
         all_data = select(AI4I_Predictive_maintance)
         fetched_data = self.session.scalars(all_data).all()
         return fetched_data
 
-    def read_specific_data(self,id):
+    def read_specific_record_data(self,id):
         Specific_row = self.session.get(AI4I_Predictive_maintance,id)
         return Specific_row
 
@@ -47,7 +62,7 @@ class databaseConnection():
 #     "OSF":0,
 #     "RNF":0}
 
-# database = databaseConnection()
-# database.CreateDatabase()
+database = databaseConnection()
+database.CreateDatabase()
 
 # database.insert_data(Sensor_validation(**row_input))
