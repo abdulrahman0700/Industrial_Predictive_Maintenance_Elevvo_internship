@@ -14,15 +14,17 @@ class Configuration(BaseSettings):
 #--------------MLflowConfig--------------
 
     mlflow_tracking_URI : str = "sqlite:///mlflow.db" # the database db that will be saving the artifacts
-
+    mlflow_tracking_URI_1 : str = "sqlite:///mlflow_Type.db"
+    
     mlflow_experiment_name : str = "Machine_Failure_Prediction"
+    mlflow_Type_experiment_name : str = "Machine_Failure_Prediction_Type"
 
 #---------------modelConfig----------------
     
     Mlflow_model_artifacts_dir : Path = Path("models_artifacts")
     # model_failure : str = "lgbm_model_failure.joblib"
     model_failure : str = "model.pkl"
-    model_failure_type : str = "XGBoosts_model_type_failure.joblib"
+    model_failure_type : str = "model1.pkl"
     mlflow_info : str = "mlflow_info/" 
 
 #---------------DataConfig-----------------
