@@ -23,7 +23,7 @@ def predicting(request : Sensor_validation):
                               "Tool_wear__min":[request.Tool_wear__min],
                               "Rotational_speed__rpm":[request.Rotational_speed__rpm]},index=[0])
     
-    database.insert_data(request)
+    machine_id = database.insert_data(request)
 
     dataReady = FeatureEngineering(dataPrepare)
 
@@ -61,7 +61,8 @@ def predicting(request : Sensor_validation):
             HDF=typeMF_Predction[1],
             PWF=typeMF_Predction[2],
             OSF=typeMF_Predction[3],
-            RNF=typeMF_Predction[4]
+            RNF=typeMF_Predction[4],
+            predictedMachine=machine_id.UDI
         ))
 
         return {"Status":200,
@@ -79,7 +80,8 @@ def predicting(request : Sensor_validation):
         HDF=0,
         PWF=0,
         OSF=0,
-        RNF=0))
+        RNF=0,
+        predictedMachine=machine_id.UDI))
         
         return {"Status":200,
                 "MF_Predction":prediction_value}

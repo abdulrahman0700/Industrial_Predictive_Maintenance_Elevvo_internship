@@ -20,6 +20,7 @@ class Predcation_Validation(BaseModel):
     PWF:bool= Field(...,validation_alias='PWF',description="Power Failures")
     OSF:bool= Field(...,validation_alias='OSF',description="Overstrain Failures")
     RNF:bool= Field(...,validation_alias='RNF',description="Random Failures")
+    predictedMachine : int
 
 
 

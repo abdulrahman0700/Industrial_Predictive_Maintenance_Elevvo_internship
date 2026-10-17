@@ -33,7 +33,7 @@ class PredictionsRecords(Base):
     PWF=Column(Boolean,nullable=False)
     OSF=Column(Boolean,nullable=False)
     RNF=Column(Boolean,nullable=False)
-    predictedMachine = Column(Integer,ForeignKey("AI4I.UDI"))
+    predictedMachine = Column(Integer,ForeignKey("AI4I.UDI"),nullable=False)
 
     related_record = relationship("AI4I_Predictive_maintance",back_populates='related_data')
 
