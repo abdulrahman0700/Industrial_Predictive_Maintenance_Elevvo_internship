@@ -7,10 +7,7 @@ from api.routes.predict import router2
 from src.schemas.Sensor_schema import Sensor_validation
 from src.data_preparation.feature_engineering import FeatureEngineering
 import plotly.express as px
-import plotly
 import pandas as pd
-import joblib
-
 
 app = FastAPI(title="Predictive_Maintenance",version="1.0.0")
 
@@ -35,6 +32,11 @@ def gettingIDData(id : int):
 def gettingAllData():
     all_data = database.read_record_data()
     return {"data":all_data}
+
+@app.get("/all/Predictiondata")
+def gettingPredictedRedcords():
+    predicted_records = database.read_all_prediction_data()
+    return {"predicted_data":predicted_records}
 
 @app.get("/dashboard")
 def Visulization():

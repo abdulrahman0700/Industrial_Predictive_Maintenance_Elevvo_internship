@@ -39,7 +39,10 @@ class Configuration(BaseSettings):
     API_Port :int = 8000
 
 
-#-------------- logging--------------
+#---------------LLM Config------------------
+    # Ollama_BASE_URL = 0
+
+#-------------- logging---------------------
 
     log_level : str = "INFO"
 
