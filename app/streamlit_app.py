@@ -1,16 +1,4 @@
-"""
-Streamlit front end for the Predictive Maintenance FastAPI service.
-
-Run the backend first:   uvicorn api.main:app --host 0.0.0.0 --port 8000
-Then run this file:      streamlit run streamlit_app.py
-
-Design choice: this app only talks to the API over HTTP. All validation,
-feature engineering, model inference and DB writes stay in the backend,
-so the UI never duplicates (or drifts from) that logic.
-"""
-
 import os
-
 import requests
 import streamlit as st
 import pandas as pd
@@ -20,10 +8,9 @@ API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 st.set_page_config(page_title="Predictive Maintenance", page_icon="🛠️", layout="wide")
 
-# Failure-type labels returned by the /predict endpoint
 FAILURE_TYPES = [
     ("Tool Wear Failures", "TWF"),
-    ("Heat Disspation Failures", "HDF"),  # key spelling matches the API response
+    ("Heat Disspation Failures", "HDF"), 
     ("Power Failures", "PWF"),
     ("Overstrain Failures", "OSF"),
     ("Random Failures", "RNF"),
@@ -43,14 +30,14 @@ def check_health(base_url: str) -> bool:
 def call_predict(payload: dict):
     """POST the sensor reading; return (ok, data_or_error_message)."""
     try:
-        r = requests.post(f"{API_URL}/predict/", json=payload, timeout=15)
+        r = requests.post(f"{API_URL}/predict/", json=payload, timeout=100)
     except requests.RequestException as exc:
         return False, f"Could not reach the API: {exc}"
 
     if r.status_code == 200:
         return True, r.json()
 
-    if r.status_code == 422:  # Pydantic validation error from FastAPI
+    if r.status_code == 422:  
         try:
             details = r.json().get("detail", [])
             msgs = [f"**{'.'.join(map(str, d['loc'][1:]))}**: {d['msg']}" for d in details]
@@ -141,6 +128,16 @@ with tab_predict:
                         flagged = bool(result.get(label, 0))
                         col.metric(label, "Likely" if flagged else "No")
 
+                    explanation = result.get("LLM_Explaination_Failure")
+
+                    if explanation:
+                        st.subheader("AI Explanation")
+                        if isinstance(explanation, dict):
+                            explanation = explanation.get("content") or str(explanation)
+                        st.info(explanation)
+                    else:
+                        st.caption("No explanation available for this prediction.")
+
                 with st.expander("Raw API response"):
                     st.json(result)
 
@@ -150,27 +147,43 @@ with tab_dashboard:
     if st.button("Load dashboard"):
         try:
             r = requests.get(f"{API_URL}/all/data", timeout=20)
+            p = requests.get(f"{API_URL}/all/Predictiondata",timeout=20)
             if r.status_code == 200:
                 response_data = r.json()
+                response_prediction_data = p.json()
 
                 all_data = response_data.get("data",[])
+                all_prediction_data = response_prediction_data.get("predicted_data",[]) 
 
                 toolWear_records = [record['Tool_wear__min'] for record in all_data]
                 torque_records = [record['Torque__Nm'] for record in all_data]
                 Type_record = [record['Type'] for record in all_data]
                 Air_temperature__K = [record['Air_temperature__K'] for record in all_data]
+                rotationSpeed = [record['Rotational_speed__rpm'] for record in all_data]
+                Machine_predicted = [record['failure_predicted'] for record in all_prediction_data]
+                Prediction_Time = [record['predictionTime'] for record in all_prediction_data]
+                Predicted_Probability = [record['failure_probability'] for record in all_prediction_data]
 
                 df = pd.DataFrame({
-                    "Tool_Wear" : toolWear_records,
-                    "Torque" : torque_records,
-                    "Type" : Type_record,
-                    "AirTemp": Air_temperature__K
+                    "Tool_Wear":toolWear_records,
+                    "Torque":torque_records,
+                    "Type":Type_record,
+                    "AirTemp":Air_temperature__K,
+                    "RotationSpeed":rotationSpeed,
+                    "Machine_Failure": Machine_predicted,
+                    "Predicted_Time" : Prediction_Time,
+                    "Predicted_Probability":Predicted_Probability
                 })
 
-                st.line_chart(df,x='Tool_Wear',y='Torque',x_label="Toor_Wear[min]",y_label='Torque[Nm]')
+                color_mapping = {
+                     True: "#FF4B4B",  # Red for failure
+                     False: "#1C83E1"  # Blue for normal/no failure
+                    }
+                df["color_code"] = df["Machine_Failure"].map(color_mapping)
 
-                st.bar_chart(df,x='Type',y='AirTemp',x_label='Machine_Type',y_label="Air_temperature[K]")
-                
+                st.scatter_chart(df,x='Tool_Wear',y="RotationSpeed",color="color_code")
+                st.line_chart(df,x='Predicted_Time',y='Tool_Wear',x_label="Toor_Wear[min]",y_label='Torque[Nm]',color="color_code")
+                st.bar_chart(df,x='Machine_Failure',y='AirTemp',x_label='Machine_Failure',y_label="Air_temperature[K]")
             else:
                 st.warning(f"Dashboard returned {r.status_code}: {r.text}")
         except requests.RequestException as exc:
