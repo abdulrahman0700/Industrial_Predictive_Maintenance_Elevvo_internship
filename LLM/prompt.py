@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 
-def Prompt(Predction_json,Predicton_Type_json):
+def Prompt(Predction_json:dict,Predicton_Type_json:dict):
     Templete = """
     You are an Reliability Engineer Expert in industrial predictive maintenance. 
     Answer the user's question based on the following data:
