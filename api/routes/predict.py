@@ -76,7 +76,7 @@ def predicting(request : Sensor_validation):
 
         llmsexplain = llmExplaination(data_json,predicted_type_json)
 
-        print(llmsexplain)
+        # print(llmsexplain)
 
         return {"Status":200,
                 "Tool Wear Failures":typeMF_Predction[0],

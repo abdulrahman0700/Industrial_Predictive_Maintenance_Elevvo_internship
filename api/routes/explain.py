@@ -1,11 +1,16 @@
 from LLM.prompt import Prompt
 from LLM.llmModel import OllamaModel
+from src.config import Configuration
 
-def llmExplaination(predicted_json,predicted_Type_fail):
+config = Configuration()
+
+llmModelName = config.Ollama_Model_name
+
+def llmExplaination(predicted_json:dict,predicted_Type_fail:dict) -> str:
     
     Prompting = Prompt(predicted_json,predicted_Type_fail)
     
-    llm = OllamaModel("qwen3:0.6b")
+    llm = OllamaModel(llmModelName)
     
     chain = Prompting | llm
     

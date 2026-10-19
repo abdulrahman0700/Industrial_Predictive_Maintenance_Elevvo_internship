@@ -38,30 +38,30 @@ def gettingPredictedRedcords():
     predicted_records = database.read_all_prediction_data()
     return {"predicted_data":predicted_records}
 
-@app.get("/dashboard")
-def Visulization():
-    row_data = database.read_all_data()
-    if not row_data :
-        raise HTTPException(
-            status_code=404,
-            detail="There is no existing data"
-        )
+# @app.get("/dashboard")
+# def Visulization():
+#     row_data = database.read_all_data()
+#     if not row_data :
+#         raise HTTPException(
+#             status_code=404,
+#             detail="There is no existing data"
+#         )
     
-    airTemp = [df.Air_temperature__K for df in row_data]
-    process_temp = [df.Process_temperature__K for df in row_data]
-    RotationalSpeed = [df.Rotational_speed__rpm for df in row_data] 
-    ToolWear = [df.Tool_wear__min for df in row_data]
-    Torque = [df.Torque__Nm for df in row_data]
+#     airTemp = [df.Air_temperature__K for df in row_data]
+#     process_temp = [df.Process_temperature__K for df in row_data]
+#     RotationalSpeed = [df.Rotational_speed__rpm for df in row_data] 
+#     ToolWear = [df.Tool_wear__min for df in row_data]
+#     Torque = [df.Torque__Nm for df in row_data]
 
-    fig_1 = px.scatter(
-                  x=ToolWear,
-                  y=Torque,
-                  title="Relationship between Tool Wear and Torque",
-                  labels={"x":"Tool Wear Min" , 'y':"Torque NM"},
-                  trendline="ols")
-    fig_2 = px.density_heatmap(x=RotationalSpeed,y=process_temp,labels={"x":"Rotation_Speed",'y':"Process_Temperature"})
+#     fig_1 = px.scatter(
+#                   x=ToolWear,
+#                   y=Torque,
+#                   title="Relationship between Tool Wear and Torque",
+#                   labels={"x":"Tool Wear Min" , 'y':"Torque NM"},
+#                   trendline="ols")
+#     fig_2 = px.density_heatmap(x=RotationalSpeed,y=process_temp,labels={"x":"Rotation_Speed",'y':"Process_Temperature"})
     
-    html_content_num1 = fig_1.to_html(full_html=False,include_plotlyjs="cdn") 
-    html_content_num2 = fig_2.to_html(full_html=False,include_plotlyjs=False)
+#     html_content_num1 = fig_1.to_html(full_html=False,include_plotlyjs="cdn") 
+#     html_content_num2 = fig_2.to_html(full_html=False,include_plotlyjs=False)
 
-    return  HTMLResponse(content=html_content_num1) 
+#     return  HTMLResponse(content=html_content_num1) 
