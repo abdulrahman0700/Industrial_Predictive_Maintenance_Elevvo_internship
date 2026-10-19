@@ -46,23 +46,3 @@ class databaseConnection():
     def read_specific_record_data(self,id):
         Specific_row = self.session.get(AI4I_Predictive_maintance,id)
         return Specific_row
-
-# row_input = {
-#     "Product_ID":"M37684",
-#     "Type":"M",
-#     "Air_temperature__K":305.0,
-#     "Process_temperature__K":314.1,
-#     "Rotational_speed__rpm":1358,
-#     "Torque__Nm":36.3,
-#     "Tool_wear__min":67,
-#     "Machine_failure":0,
-#     "TWF":0,
-#     "HDF":0,
-#     "PWF":0,
-#     "OSF":0,
-#     "RNF":0}
-
-database = databaseConnection()
-database.CreateDatabase()
-
-# database.insert_data(Sensor_validation(**row_input))

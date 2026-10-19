@@ -40,7 +40,7 @@ class Configuration(BaseSettings):
 
 
 #---------------LLM Config------------------
-    # Ollama_BASE_URL = 0
+    Ollama_Model_name = "qwen3:0.6b"
 
 #-------------- logging---------------------
 
