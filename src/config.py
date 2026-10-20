@@ -40,7 +40,7 @@ class Configuration(BaseSettings):
 
 
 #---------------LLM Config------------------
-    Ollama_Model_name = "qwen3:0.6b"
+    Ollama_Model_name : str = "qwen3:0.6b"
 
 #-------------- logging---------------------
 
