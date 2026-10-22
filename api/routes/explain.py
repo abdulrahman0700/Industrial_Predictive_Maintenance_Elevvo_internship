@@ -4,7 +4,7 @@ from src.config import Configuration
 
 config = Configuration()
 
-llmModelName = config.Ollama_Model_name
+llmModelName = config.OLLAMA_MODEL_NAME
 
 def llmExplaination(predicted_json:dict,predicted_Type_fail:dict) -> str:
     
