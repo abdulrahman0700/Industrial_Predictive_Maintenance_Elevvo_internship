@@ -138,8 +138,8 @@ with tab_predict:
                     else:
                         st.caption("No explanation available for this prediction.")
 
-                with st.expander("Raw API response"):
-                    st.json(result)
+                # with st.expander("Raw API response"):
+                #     st.json(result)
 
 # ----------------------------- dashboard ---------------------------
 with tab_dashboard:
@@ -182,7 +182,7 @@ with tab_dashboard:
                 df["color_code"] = df["Machine_Failure"].map(color_mapping)
 
                 st.scatter_chart(df,x='Tool_Wear',y="RotationSpeed",color="color_code")
-                st.line_chart(df,x='Predicted_Time',y='Tool_Wear',x_label="Toor_Wear[min]",y_label='Torque[Nm]',color="color_code")
+                st.line_chart(df,x='Predicted_Time',y='Tool_Wear',x_label="Time",y_label='Toor_Wear[min]',color="color_code")
                 st.bar_chart(df,x='Machine_Failure',y='AirTemp',x_label='Machine_Failure',y_label="Air_temperature[K]")
             else:
                 st.warning(f"Dashboard returned {r.status_code}: {r.text}")
