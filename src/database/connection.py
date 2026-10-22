@@ -12,6 +12,7 @@ class databaseConnection():
         self.Base = Base
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
+        self.CreateDatabase() 
 
     def CreateDatabase(self):
         self.Base.metadata.create_all(self.engine)

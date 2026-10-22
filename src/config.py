@@ -9,7 +9,7 @@ class Configuration(BaseSettings):
 
 #------------databaseConfig-------------- 
  
-    DATABASE_URL : str = 'postgresql+psycopg2://postgres:123456789@localhost:5432/postgres'
+    DATABASE_URL : str = 'postgresql+psycopg2://postgres:123456789@postgres:5432/postgres'
 
 #--------------MLflowConfig--------------
 
@@ -40,7 +40,8 @@ class Configuration(BaseSettings):
 
 
 #---------------LLM Config------------------
-    Ollama_Model_name : str = "qwen3:0.6b"
+    OLLAMA_MODEL_NAME : str = "qwen3:0.6b"
+    OLLAMA_BASE_URL : str = "http://localhost:11434"
 
 #-------------- logging---------------------
 
